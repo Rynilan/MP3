@@ -12,13 +12,12 @@ from tkinter import (Frame,
                      Checkbutton,
                      BooleanVar)
 
-from Musica import Musica
+from Musica_V2 import Musica
 
 from threading import Thread
 
 
 class Janela:
-    tocando = Thread()
     framework = Thread()
     ant = [int(), Musica()]
     MusCad = ListarCad()
@@ -244,7 +243,7 @@ class Janela:
                          padx="10")
 
     def Kill(self: object, master: Frame) -> None:
-        if self.framework.is_alive() or self.tocando.is_alive():
+        if self.framework.is_alive():
             self.Parar()
         master.destroy()
 
@@ -290,20 +289,18 @@ class Janela:
         self.CriaLista()
 
     def Tocar(self: object, invocador: str) -> None:
-        tocando = self.tocando
-        if tocando.is_alive():
+        framework = self.framework
+        if framework.is_alive():
             self.Parar()
-            tocando = self.framework
+            framework = self.framework
             while self.framework.is_alive():
                 pass
         escolhida = self.Escolha(invocador)
         escolhida = [escolhida, Musica(self.MusCad[escolhida])]
-        tocando = Thread(target=escolhida[1].Play)
+        escolhida[1].Play()
         framework = Thread(target=self.telaTocadora)
-        self.tocando = tocando
         self.framework = framework
         self.ant = escolhida
-        tocando.start()
         while not escolhida[1].info:
             pass
         framework.start()
@@ -328,19 +325,20 @@ class Janela:
         return escolhida
 
     def Parar(self: object) -> None:
-        tocando, framework = self.tocando, self.framework
-        if tocando.is_alive() or framework.is_alive():
+        framework = self.framework
+        if framework.is_alive():
             self.ant[1].Stop()
-            while tocando.is_alive() or framework.is_alive():
+            while framework.is_alive():
                 pass
 
     def telaTocadora(self):
         ant = self.ant[1]
         introtoc = self.IntroToc
         barratoc = self.BarraToc
-        while self.tocando.is_alive():
+        while self.framework.is_alive():
             introtoc["text"] = ant.nome + "\n" + ant.pos + " / " + ant.duracao
             if ant.posSegundo % (ant.duracaoSegundo // 15) == 0:
+                ant.posicao()
                 inter = int(15 * ant.posSegundo / ant.duracaoSegundo)
                 barratoc["text"] = "[]" * inter + "--" * (15 - inter)
         if self.continuo.get():
