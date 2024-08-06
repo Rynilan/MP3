@@ -336,9 +336,9 @@ class Janela:
         introtoc = self.IntroToc
         barratoc = self.BarraToc
         while self.framework.is_alive():
+            ant.posicao()
             introtoc["text"] = ant.nome + "\n" + ant.pos + " / " + ant.duracao
             if ant.posSegundo % (ant.duracaoSegundo // 15) == 0:
-                ant.posicao()
                 inter = int(15 * ant.posSegundo / ant.duracaoSegundo)
                 barratoc["text"] = "[]" * inter + "--" * (15 - inter)
         if self.continuo.get():
