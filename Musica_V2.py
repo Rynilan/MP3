@@ -51,16 +51,22 @@ class Musica:
         mixer.music.unload()
         self.toca = False
 
+    def terminou(self):
+        if mixer.music.get_busy():
+            return False
+        return True
+
     def posicao(self: object) -> None:
-        posicaoSegundo = int(mixer.music.get_pos() // 1000)
-        posicao = str()
-        if len(str(posicaoSegundo // 60)) == 1:
-            posicao = "0" + str(posicaoSegundo // 60)
-        else:
-            posicao = str(posicaoSegundo // 60)
-        if len(str(posicaoSegundo % 60)) == 1:
-            posicao = posicao + " : 0" + str(posicaoSegundo % 60)
-        else:
-            posicao = posicao + " : " + str(posicaoSegundo % 60)
-        self.pos = posicao
-        self.posSegundo = posicaoSegundo
+        if mixer.music.get_busy():
+            posicaoSegundo = int(mixer.music.get_pos() // 1000)
+            posicao = str()
+            if len(str(posicaoSegundo // 60)) == 1:
+                posicao = "0" + str(posicaoSegundo // 60)
+            else:
+                posicao = str(posicaoSegundo // 60)
+            if len(str(posicaoSegundo % 60)) == 1:
+                posicao = posicao + " : 0" + str(posicaoSegundo % 60)
+            else:
+                posicao = posicao + " : " + str(posicaoSegundo % 60)
+            self.pos = posicao
+            self.posSegundo = posicaoSegundo

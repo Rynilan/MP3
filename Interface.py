@@ -260,8 +260,8 @@ class Janela:
                         xscrollcommand=self.barrax.set,
                         selectmode="single",
                         selectbackground="#00FA9A")
-        lista.bind("<Return>", lambda a: self.Tocar())
-        lista.bind("<KP_Enter>", lambda a: self.Tocar())
+        lista.bind("<Return>", lambda a: self.Tocar("botao"))
+        lista.bind("<KP_Enter>", lambda a: self.Tocar("botao"))
         self.barrax["command"] = lista.xview
         self.barray["command"] = lista.yview
         y = int()
@@ -290,22 +290,19 @@ class Janela:
 
     def Tocar(self: object, invocador: str) -> None:
         framework = self.framework
-        if framework.is_alive():
+        if framework.is_alive() and invocador != "continuo":
             self.Parar()
-            framework = self.framework
-            while self.framework.is_alive():
-                pass
         escolhida = self.Escolha(invocador)
         escolhida = [escolhida, Musica(self.MusCad[escolhida])]
         escolhida[1].Play()
         framework = Thread(target=self.telaTocadora)
-        self.framework = framework
-        self.ant = escolhida
         while not escolhida[1].info:
             pass
+        self.framework = framework
+        self.ant = escolhida
         framework.start()
 
-    def Escolha(self, invocador: str) -> int:
+    def Escolha(self: object, invocador: str) -> int:
         from random import random
 
         if invocador == "continuo":
@@ -325,24 +322,25 @@ class Janela:
         return escolhida
 
     def Parar(self: object) -> None:
-        framework = self.framework
-        if framework.is_alive():
+        ativa = self.framework.is_alive()
+        if ativa:
             self.ant[1].Stop()
-            while framework.is_alive():
-                pass
 
     def telaTocadora(self):
         ant = self.ant[1]
         introtoc = self.IntroToc
         barratoc = self.BarraToc
-        while self.framework.is_alive():
+        while self.ant[1].terminou() is False:
             ant.posicao()
             introtoc["text"] = ant.nome + "\n" + ant.pos + " / " + ant.duracao
             if ant.posSegundo % (ant.duracaoSegundo // 15) == 0:
                 inter = int(15 * ant.posSegundo / ant.duracaoSegundo)
                 barratoc["text"] = "[]" * inter + "--" * (15 - inter)
-        if self.continuo.get():
+        if self.continuo.get() is True and ant.toca is True:
             self.Tocar("continuo")
+        else:
+            introtoc["text"] = "Escolha uma música\n -- : -- / -- : --"
+            barratoc["text"] = "[]" * 15
 
     def FuncaoOpcoes(self):
         if self.continuo.get():
