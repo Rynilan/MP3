@@ -12,7 +12,7 @@ from tkinter import (Frame,
                      Checkbutton,
                      BooleanVar)
 
-from Musica_V2 import Musica
+from Musica import Musica
 
 from threading import Thread
 
@@ -322,21 +322,22 @@ class Janela:
         return escolhida
 
     def Parar(self: object) -> None:
-        ativa = self.framework.is_alive()
-        if ativa:
+        if self.framework.is_alive():
             self.ant[1].Stop()
+            # Não encontrada outra forma de solucionar.
 
     def telaTocadora(self):
         ant = self.ant[1]
         introtoc = self.IntroToc
         barratoc = self.BarraToc
-        while self.ant[1].terminou() is False:
+        while not ant.toca.is_set():
             ant.posicao()
             introtoc["text"] = ant.nome + "\n" + ant.pos + " / " + ant.duracao
             if ant.posSegundo % (ant.duracaoSegundo // 15) == 0:
                 inter = int(15 * ant.posSegundo / ant.duracaoSegundo)
                 barratoc["text"] = "[]" * inter + "--" * (15 - inter)
-        if self.continuo.get() is True and ant.toca is True:
+            ant.terminou()
+        if self.continuo.get() is True and not ant.toca.is_set():
             self.Tocar("continuo")
         else:
             introtoc["text"] = "Escolha uma música\n -- : -- / -- : --"

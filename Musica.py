@@ -1,92 +1,70 @@
 from pathlib import Path
+from threading import Event
+from pygame import mixer, init
 
 
 class Musica:
-    def __init__(self, endereco: Path | None = ""):
-        self.info = False
+    init()
+    mixer.init()
+
+    def __init__(self: object, endereco: Path | None = ""):
         self.pos = "00 : 00"
         self.posSegundo = 0
-        self.toca = False
+
+        self.duracao = "-- : --"
+        self.duracaoSegundo = 0
+
+        self.toca = Event()
+        self.info = False
+
         self.endereco = endereco
         self.nome = endereco[endereco.rfind("/") + 1: endereco.rfind(".")]
 
-    def Info(self) -> None:
-        import pydub as pd
-
+    def Info(self: object) -> None:
         endereco = self.endereco
-        if endereco.endswith(".mp3"):
-            musica, self.tipo = pd.AudioSegment.from_mp3(endereco), "mp3"
+        musica = mixer.Sound(endereco)
+        duracaoSegundo = int(musica.get_length())
+        duracao = str()
+        if len(str(duracaoSegundo // 60)) == 1:
+            duracao = "0" + str(duracaoSegundo // 60)
         else:
-            musica = pd.AudioSegment.from_file(endereco, format=".wav")
-            self.tipo = "wave"
-        self.duracao = str(len(musica) // 60000)
-        self.duracaoSegundo = int(len(musica) / 1000)
-        if len(self.duracao) == 1:
-            self.duracao = "0" + self.duracao
-        if len(str(len(musica) % 60)) == 1:
-            self.duracao = self.duracao + " : 0" + str(len(musica) % 60)
+            duracao = str(duracaoSegundo // 60)
+        if len(str(duracaoSegundo % 60)) == 1:
+            duracao = duracao + " : 0" + str(duracaoSegundo % 60)
         else:
-            self.duracao = self.duracao + " : " + str(len(musica) % 60)
+            duracao = duracao + " : " + str(duracaoSegundo % 60)
+        self.duracao = duracao
+        self.duracaoSegundo = duracaoSegundo
         self.info = True
 
-    def Play(self) -> None:
-
-        from os import remove, getcwd
-        from pyaudio import PyAudio
-        import wave as wv
-        from time import time
-
+    def Play(self: object) -> None:
         if not self.info:
             self.Info()
-        musica = self.endereco
-        tipo = self.tipo
-        if tipo == "mp3":
-            musica = self.Temp(musica)
-        with wv.open(musica, "rb") as mus:
-            audio = PyAudio()
-            formato = audio.get_format_from_width(mus.getsampwidth())
-            tocador = audio.open(format=formato,
-                                 channels=mus.getnchannels(),
-                                 rate=mus.getframerate(),
-                                 output=True)
-            chunk = 1024
-            self.data = mus.readframes(chunk)
-            self.toca = True
-            tempoInicial = time()
-            while len(self.data) > 0 and self.toca:
-                if self.posSegundo < int(time() - tempoInicial):
-                    self.posicao(tempoInicial)
-                tocador.write(self.data)
-                self.data = mus.readframes(chunk)
-            tocador.close()
-            self.toca = False
-            audio.terminate()
-            self.posSegundo, self.pos = 0, "00 : 00"
-        if tipo == "mp3":
-            remove(getcwd() + "/temp.wav")
+        if mixer.music.get_busy():
+            self.Stop()
+        mixer.music.load(self.endereco)
+        mixer.music.play()
 
-    def Temp(self, mp3):
+    def Stop(self: object) -> None:
+        mixer.music.stop()
+        mixer.music.unload()
+        self.toca.set()
 
-        from pydub import AudioSegment
-        from os import getcwd
+    def terminou(self: object) -> None:
+        if not mixer.music.get_busy():
+            self.toca.set()
 
-        mp3 = AudioSegment.from_mp3(mp3)
-        mp3.export(getcwd() + "/temp.wav", format="wav")
-        return str(getcwd() + "/temp.wav")
-
-    def Stop(self) -> None:
-        self.toca = False
-
-    def posicao(self: object, inicio: int) -> None:
-        from time import time
-
-        self.posSegundo = int(time() - inicio)
-        if len(f"{int((time() - inicio) // 60)}") == 1:
-            a = "0" + f"{int((time() - inicio) // 60)}"
-        else:
-            a = f"{int((time() - inicio) // 60)}"
-        if len(f"{int((time() - inicio) % 60)}") == 1:
-            b = "0" + f"{int((time() - inicio) % 60)}"
-        else:
-            b = f"{int((time() - inicio) % 60)}"
-        self.pos = a + " : " + b
+    def posicao(self: object) -> None:
+        if mixer.music.get_busy():
+            posicaoSegundo = int(mixer.music.get_pos() // 1000)
+            posicao = str()
+            if len(str(posicaoSegundo // 60)) == 1:
+                posicao = "0" + str(posicaoSegundo // 60)
+            else:
+                posicao = str(posicaoSegundo // 60)
+            if len(str(posicaoSegundo % 60)) == 1:
+                posicao = posicao + " : 0" + str(posicaoSegundo % 60)
+            else:
+                posicao = posicao + " : " + str(posicaoSegundo % 60)
+            self.pos = posicao
+            self.posSegundo = posicaoSegundo
