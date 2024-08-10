@@ -338,7 +338,6 @@ class Janela:
             stop."""
         if self.framework.is_alive():
             self.ant[1].Stop()
-            self.framework.join()
 
     def telaTocadora(self):
         """ Method to update the frame who show the music name,

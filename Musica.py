@@ -6,7 +6,7 @@ from pygame import mixer, init
 class Musica:
     """ Transform a path into a music object
 
-        endereco: Path | None = None
+        endereco: Path | default = ""
     """
     init()
     mixer.init()
