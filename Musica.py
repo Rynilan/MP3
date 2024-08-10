@@ -4,6 +4,10 @@ from pygame import mixer, init
 
 
 class Musica:
+    """ Transform a path into a music object
+
+        endereco: Path | None = None
+    """
     init()
     mixer.init()
 
@@ -21,6 +25,8 @@ class Musica:
         self.nome = endereco[endereco.rfind("/") + 1: endereco.rfind(".")]
 
     def Info(self: object) -> None:
+        """ Add the information of the music when it is more
+            convenient"""
         endereco = self.endereco
         musica = mixer.Sound(endereco)
         duracaoSegundo = int(musica.get_length())
@@ -38,6 +44,7 @@ class Musica:
         self.info = True
 
     def Play(self: object) -> None:
+        """ Load and play the music on the stream."""
         if not self.info:
             self.Info()
         if mixer.music.get_busy():
@@ -46,15 +53,21 @@ class Musica:
         mixer.music.play()
 
     def Stop(self: object) -> None:
+        """ Stop and unload the music from the stream."""
         mixer.music.stop()
         mixer.music.unload()
         self.toca.set()
 
     def terminou(self: object) -> None:
+        """ Test if the stream is busy during the stream play,
+            and when it end set the event of 'toca'."""
         if not mixer.music.get_busy():
             self.toca.set()
 
     def posicao(self: object) -> None:
+        """ Get the position of the music in seconds (it doesn't
+            return it, just calculate and store it on 'pos' and
+            'posSegundo'"""
         if mixer.music.get_busy():
             posicaoSegundo = int(mixer.music.get_pos() // 1000)
             posicao = str()

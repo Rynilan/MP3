@@ -2,6 +2,7 @@ from pathlib import Path
 
 
 def Cadastro(endereco: Path) -> None:
+    """ Stores the path on the memory if the path leads to a .mp3 file."""
     from os import path
 
     # Verifica se o endereço dado é do tipo .mp3 ou .wav.
@@ -14,26 +15,35 @@ def Cadastro(endereco: Path) -> None:
 
 
 def ListarCad() -> list[Path]:
+    """ List all the paths that are in the memory.
+
+        Note: if a path stored has changed and it's not valid anymore
+        it'll be removed from the memory."""
     from os import path
 
     cadastradas = list()
     with open(path.dirname(path.realpath(__file__)) + "/cadastradas.txt",
               "r") as cad:
         musCad = cad.readlines()
+    cad = 0
     if len(musCad) > 0:
         for x in musCad:
             if ValideEndereco(x.removesuffix("\n")):
                 cadastradas.append(x.removesuffix("\n"))
+            else:
+                RemoverCad(cad)
+            cad += 1
         return cadastradas
     else:
         return list()
 
 
 def ValideEndereco(endereco: Path) -> bool:
+    """ Confirm if the path leads to a .mp3 file."""
     from os import path
 
     # Verifica se o endereco informado existe.
-    if endereco.endswith(".mp3") or endereco.endswith(".wav"):
+    if endereco.endswith(".mp3"):
         if path.exists(endereco):
             existe = True
         else:
@@ -44,6 +54,7 @@ def ValideEndereco(endereco: Path) -> bool:
 
 
 def RemoverCad(indice: int) -> list[Path]:
+    """ Remove a path from the memory."""
     from os import path, rename, remove
 
     # Pega as músicas do cadastro.

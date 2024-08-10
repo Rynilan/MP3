@@ -18,6 +18,7 @@ from threading import Thread
 
 
 class Janela:
+    """ The window of the music player."""
     framework = Thread()
     ant = [int(), Musica()]
     MusCad = ListarCad()
@@ -243,11 +244,13 @@ class Janela:
                          padx="10")
 
     def Kill(self: object, master: Frame) -> None:
+        """ Close the program."""
         if self.framework.is_alive():
             self.Parar()
         master.destroy()
 
     def CriaLista(self: object) -> None:
+        """ Method to create the list box."""
         lista = Listbox(self.Lista,
                         font=("Exmouth", "30", "bold"),
                         fg="#8B4513",
@@ -272,6 +275,8 @@ class Janela:
         self.ListaCad = lista
 
     def Cadastrar(self: object) -> None:
+        """ Adds the path of a music on the data storage and
+            update the checklist."""
         endereco = self.CampoCad.get()
         if ValideEndereco(endereco):
             Cadastro(endereco)
@@ -280,6 +285,8 @@ class Janela:
             self.CriaLista()
 
     def Excluir(self: object) -> None:
+        """ Remove a music of the stored data and reload the
+            list box."""
         indice = self.ListaCad.curselection()[0]
         if self.ant[0] == indice:
             self.Parar()
@@ -289,6 +296,10 @@ class Janela:
         self.CriaLista()
 
     def Tocar(self: object, invocador: str) -> None:
+        """ Play the music.
+
+            Important: if there's already a music playing it'll
+            stop it."""
         framework = self.framework
         if framework.is_alive() and invocador != "continuo":
             self.Parar()
@@ -303,6 +314,7 @@ class Janela:
         framework.start()
 
     def Escolha(self: object, invocador: str) -> int:
+        """ Get the music to be played."""
         from random import random
 
         if invocador == "continuo":
@@ -322,11 +334,16 @@ class Janela:
         return escolhida
 
     def Parar(self: object) -> None:
+        """ Stop the music from playing and wait the thread, framework
+            stop."""
         if self.framework.is_alive():
             self.ant[1].Stop()
-            # Não encontrada outra forma de solucionar.
+            self.framework.join()
 
     def telaTocadora(self):
+        """ Method to update the frame who show the music name,
+            position, duration and the progress bar.
+            Note: It's placed on a thread."""
         ant = self.ant[1]
         introtoc = self.IntroToc
         barratoc = self.BarraToc
@@ -344,6 +361,8 @@ class Janela:
             barratoc["text"] = "[]" * 15
 
     def FuncaoOpcoes(self):
+        """ Method to activate the others two checkboxes
+            activated when the first checkbox is activated."""
         if self.continuo.get():
             self.OpAlea["state"] = "normal"
             self.OpLoop["state"] = "normal"
