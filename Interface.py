@@ -19,7 +19,6 @@ from threading import Thread
 
 class Janela:
     """ The window of the music player."""
-    parada = False
     framework = Thread()
     ant = [int(), Musica()]
     MusCad = ListarCad()
@@ -338,11 +337,8 @@ class Janela:
         """ Stop the music from playing and wait the thread, framework
             stop."""
         if self.framework.is_alive():
-            self.parada = True
+            self.continuo.set(False)
             self.ant[1].Stop()
-            while self.framework.is_alive():
-                pass
-            self.parada = False
 
     def telaTocadora(self):
         """ Method to update the frame who show the music name,
@@ -358,9 +354,11 @@ class Janela:
                 inter = int(15 * ant.posSegundo / ant.duracaoSegundo)
                 barratoc["text"] = "[]" * inter + "--" * (15 - inter)
             ant.terminou()
-        if self.continuo.get() is True and self.parada is False:
+        if self.continuo.get() is True:
             self.Tocar("continuo")
         else:
+            if self.OpLoop.cget("state") == "normal":
+                self.continuo.set(True)
             introtoc["text"] = "Escolha uma música\n -- : -- / -- : --"
             barratoc["text"] = "[]" * 15
 
