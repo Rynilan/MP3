@@ -1,7 +1,7 @@
-from Cadastro import (ListarCad,
-                      Cadastro,
-                      ValideEndereco,
-                      RemoverCad)
+from control.Cadastro import (ListarCad,
+                              Cadastro,
+                              ValideEndereco,
+                              RemoverCad)
 
 from tkinter import (Frame,
                      Label,
@@ -12,7 +12,11 @@ from tkinter import (Frame,
                      Checkbutton,
                      BooleanVar)
 
-from Musica import Musica
+from control.Musica import Musica
+
+from control.Configuracoes import (pegar_texto,
+                                   pegar_configuracoes,
+                                   mudar_configuracoes)
 
 from threading import Thread
 
@@ -22,6 +26,29 @@ class Janela:
     framework = Thread()
     ant = [int(), Musica()]
     MusCad = ListarCad()
+
+    def caracteristicas(self: object) -> None:
+
+        configuracoes: tuple[str] = pegar_configuracoes()
+        textos: tuple[str] = pegar_texto()
+        self.titulo.configure(font=(
+            configuracoes[
+        ),
+                              fg=configuracoes[1],
+                              bg=configuracoes[0])
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
+        self..configure(font=, fg=, bg=)
 
     def __init__(self, master=None):
         font = ("Exmouth", "30", "bold")
@@ -320,7 +347,7 @@ class Janela:
         if invocador == "continuo":
             muslen = len(self.MusCad)
             if self.aleatorio.get():
-                ant = self.ant
+                ant = self.ant[0]
                 escolhida = ant
                 while escolhida == ant:
                     escolhida = int(random() * muslen)

@@ -7,8 +7,9 @@ def Cadastro(endereco: Path) -> None:
 
     # Verifica se o endereço dado é do tipo .mp3 ou .wav.
     if ValideEndereco(endereco):
-        with open(path.dirname(path.realpath(__file__)) + "/cadastradas.txt",
-                  "a") as cad:
+        with open(path.dirname(path.realpath(__file__)
+                               ).removesuffix(r"/control") +
+                  r"/model/cadastradas.txt", "a") as cad:
             cad.writelines(endereco + "\n")
     else:
         print("ERRO: endereço inválido.")
@@ -22,8 +23,9 @@ def ListarCad() -> list[Path]:
     from os import path
 
     cadastradas = list()
-    with open(path.dirname(path.realpath(__file__)) + "/cadastradas.txt",
-              "r") as cad:
+    with open(path.dirname(path.realpath(__file__)
+                           ).removesuffix(r"/control") +
+              r"/model/cadastradas.txt", "r") as cad:
         musCad = cad.readlines()
     cad = 0
     if len(musCad) > 0:
@@ -58,17 +60,19 @@ def RemoverCad(indice: int) -> list[Path]:
     from os import path, rename, remove
 
     # Pega as músicas do cadastro.
-    with open(path.dirname(path.realpath(__file__)) + r"/cadastradas.txt",
+    endereco = str(path.dirname(path.realpath(__file__)
+                                ).removesuffix(r"/control") +
+                   r"/model")
+    with open(endereco + r"/cadastradas.txt",
               "r") as cad:
         cad = cad.readlines()
     # Remove a música de índice selecionado.
     cad.pop(indice)
     # Cria um árquivo (temp.txt) que será o novo arquivo de cadastro.
-    with open(path.dirname(path.realpath(__file__)) + r"/temp.txt",
+    with open(endereco + r"/temp.txt",
               "w") as temp:
         temp.writelines(cad)
     # Renomeia temp.txt para cadastradas.txt, deleta a antiga cadastradas.txt
-    remove(path.dirname(path.realpath(__file__)) + r"/cadastradas.txt")
-    rename(path.dirname(path.realpath(__file__)) + r"/temp.txt",
-           path.dirname(path.realpath(__file__)) + r"/cadastradas.txt")
+    remove(endereco + r"/cadastradas.txt")
+    rename(endereco + r"/temp.txt", endereco + r"/cadastradas.txt")
     return ListarCad()

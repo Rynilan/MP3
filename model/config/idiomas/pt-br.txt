@@ -1,0 +1,10 @@
+Para cadastrar uma música indique o seu diretório.
+Cadastrar
+Contínuo?
+Cíclico?
+Aleatório?
+Parar
+Musicas Cadastradas
+Play
+Excluir
+Sair

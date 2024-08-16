@@ -1,0 +1,6 @@
+IDIOMA:pt-br
+TEMA:claro
+ORIENTAÇÃO:horizontal
+TAMANHO_DA_LETRA:30
+FONTE:Exmouth
+CARACTERÍSTICA:bold
