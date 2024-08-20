@@ -1,4 +1,4 @@
-Para cadastrar uma música indique o seu diretório.
+Para cadastrar uma música indique\no seu diretório.
 Cadastrar
 Contínuo?
 Cíclico?
@@ -8,3 +8,6 @@ Musicas Cadastradas
 Play
 Excluir
 Sair
+Musicas Piratas 3
+Escolha uma música\n -- : -- / -- : --
+[][][][][][][][][][][][][][][]

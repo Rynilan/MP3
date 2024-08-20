@@ -10,12 +10,9 @@ from tkinter import (Frame,
                      Listbox,
                      Scrollbar,
                      Checkbutton,
-                     BooleanVar,
-                     Tk)
+                     BooleanVar)
 
 from control.Musica import Musica
-
-from codecs import decode
 
 from control.Configuracoes import (pegar_texto,
                                    pegar_configuracoes,
@@ -30,101 +27,101 @@ class Janela:
     ant = [int(), Musica()]
     MusCad = ListarCad()
 
-    def __init__(self: object, master: Tk) -> None:
-        self.html(master)
-        self.css()
+    def caracteristicas(self: object) -> None:
+        """ The 'CSS' of the page, 'll be reload everytime that the settings
+            change."""
 
-    def css(self: object) -> None:
-        """ Give the style for the widgets."""
-
-        from tkinter import Frame, Button, Entry, Label, Checkbutton
         configuracoes: tuple[str] = pegar_configuracoes()
-        textos: tuple[str] = pegar_texto(configuracoes[0])
+        textos: tuple[str] = pegar_texto()
         font: tuple[str] = (configuracoes[3],
                             configuracoes[2],
                             configuracoes[4])
+        fg1: str = configuracoes[5][1]
+        fg2: str = configuracoes[5][6]
+        bgMas: str = configuracoes[5][0]
+        bgCad: str = configuracoes[5][2]
+        bgToc: str = configuracoes[5][4]
+        bgLis: str = configuracoes[5][3]
+        bgOpc: str = configuracoes[5][5]
 
-#        fg1: str = configuracoes[5][1]
-#        fg2: str = configuracoes[5][6]
-#        bgMas: str = configuracoes[5][0]
-#        bgCad: str = configuracoes[5][2]
-#        bgToc: str = configuracoes[5][4]
-#        bgLis: str = configuracoes[5][3]
-#        bgOpc: str = configuracoes[5][5]
+        self.Cadastro.configure(bg=bgCad)
+        self.ListaCad.configure(bg=bgLis)
+        self.Opcoes.configure(bg=bgOpc)
+        self.Tocador.configure(bg=bgToc)
+        self.titulo.configure(text=textos[10],
+                              fg=fg1,
+                              bg=bgMas)
 
-        elementos: dict = vars(self)
+        self.IntroCad.configure(text=textos[0],
+                                fg=fg1,
+                                bg=bgCad)
 
-        for atributo, valor in elementos.items():
-            if type(valor) not in (BooleanVar, list, Thread):
-                match valor.master:
-                    case self.Cadastro:
-                        fg: str = configuracoes[5][1]
-                        bg: str = configuracoes[5][2]
-                    case self.Tocador:
-                        fg: str = configuracoes[5][6]
-                        bg: str = configuracoes[5][4]
-                    case self.Lista:
-                        fg: str = configuracoes[5][1]
-                        bg: str = configuracoes[5][3]
-                    case self.Opcoes:
-                        fg: str = configuracoes[5][6]
-                        bg: str = configuracoes[5][5]
-                    case _:
-                        fg: str = configuracoes[5][1]
-                        bg: str = configuracoes[5][0]
-                if type(valor) in (Label, Checkbutton, Entry, Button):
-                    valor.configure(bg=bg, fg=fg, font=font)
-                if type(valor) is Entry:
-                    valor.configure(insertbackground=fg,
-                                    width=30,
-                                    font=("Hack", "12"))
-                elif type(valor) is Frame:
-                    valor.configure(bg=bg,
-                                    bd="5",
-                                    relief="raised")
-                elif type(valor) is Button:
-                    valor.configure(activebackground=fg,
-                                    activeforeground=bg,
-                                    bd="3",
-                                    relief="raised")
-                elif type(valor) is Checkbutton:
-                    valor: Checkbutton
-                    valor.configure(highlightthickness=0,
-                                    fg="#000000",
-                                    font=(configuracoes[3],
-                                          "18", configuracoes[4]),
-                                    onvalue=True,
-                                    offvalue=False,
-                                    justify="left")
-                elif type(valor) is Tk:
-                    valor.configure(bg=bg)
-                else:
-                    pass
-        self.Cadastro["bg"] = configuracoes[5][2]
-        self.Opcoes["bg"] = configuracoes[5][5]
-        self.Lista["bg"] = configuracoes[5][3]
-        self.Tocador["bg"] = configuracoes[5][4]
-        self.titulo.configure(text=textos[10])
-        self.IntroCad.configure(text=textos[0].replace("\\n", "\n"))
-        self.BotaoCad.configure(text=textos[1])
-        self.Contin.configure(text=textos[2])
-        self.OpLoop.configure(text=textos[3])
-        self.OpAlea.configure(text=textos[4])
-        self.BotaoParar.configure(text=textos[5], font=("Hack", "12"))
-        self.TituloLista.configure(text=textos[6])
-        self.BotaoPlay.configure(text=textos[7])
-        self.BotaoExc.configure(text=textos[8])
-        self.sair.configure(text=textos[9])
-        self.IntroToc.configure(text=textos[11].replace("\\n", "\n"))
-        self.BarraToc.configure(text=textos[12])
+        self.BotaoCad.configure(text=testos[1],
+                                font=font,
+                                fg=fg1,
+                                bg=bgCad,
+                                activebackground=fg1,
+                                activeforeground=bgCad)
 
-    def html(self: object, master: Tk) -> None:
-        """ Create and place the widgets on the window."""
+        self.Contin.configure(text=testos[2],
+                              font=font,
+                              fg=fg2,
+                              bg=bgOpc)
 
+        self.OpLoop.configure(text=textos[3],
+                              font=font,
+                              fg=fg2,
+                              bg=bgOpc)
+
+        self.OpAlea.configure(text=textos[4],
+                              font=font,
+                              fg=fg2,
+                              bg=bgOpc)
+
+        self.BotaoParar.configure(text=textos[5],
+                                  font=font,
+                                  fg=fg2,
+                                  bg=bgToc,
+                                  activeforeground=bgToc,
+                                  activebackground=fg2)
+
+        self.TituloLista.configure(text=textos[6],
+                                   font=font,
+                                   fg=fg1,
+                                   bg=bgLis)
+
+        self.BotaoPlay.configure(text=textos[7],
+                                 font=font,
+                                 fg=fg1,
+                                 bg=bgLis,
+                                 activebackground=fg1,
+                                 activeforeground=bgLis)
+
+        self.BotaoExc.configure(text=textos[8],
+                                font=font,
+                                fg=fg1,
+                                bg=bgLis,
+                                activeforeground=bgLis,
+                                activebackground=fg1)
+
+        self.sair.configure(text=textos[9],
+                            font=font,
+                            fg=fg1,
+                            bg=bgMas,
+                            activebackground=fg1,
+                            activeforeground=bgMas)
+
+        self.CampoCad.configure(fg=, bg=)
+
+    def __init__(self, master=None):
+        font = ("Exmouth", "30", "bold")
+        bg = "#32CD32"
+        fg = "#8B4513"
+
+        master["bg"] = bg
         master.title("MP3")
         master.geometry("1366x768")
         master.bind("<Escape>", lambda a: self.Kill(master))
-        self.master = master
 
         self.titulo = Label(master)
         self.titulo.pack(side="top",
@@ -135,34 +132,56 @@ class Janela:
         self.sair.pack(side="bottom",
                        fill="x")
 
-        self.Cadastro = Frame(master)
+        self.Cadastro = Frame(master,
+                              bg="#FFFACD",
+                              borderwidth="5",
+                              relief="raised")
         self.Cadastro.place(x=25,
                             y=60,
                             width=700,
                             height=300)
 
-        self.Lista = Frame(master)
+        self.Lista = Frame(master,
+                           bg="#40E0D0",
+                           borderwidth="5",
+                           relief="raised")
         self.Lista.place(x=750,
                          y=60,
                          width=516,
                          height=540)
 
-        self.Opcoes = Frame(master)
+        self.Opcoes = Frame(master,
+                            bg="#B22222",
+                            borderwidth="5",
+                            relief="raised")
         self.Opcoes.place(x=25,
                           y=385,
                           width=200,
                           height=215)
 
-        self.Tocador = Frame(master)
+        self.Tocador = Frame(master,
+                             bg="#F0C300",
+                             borderwidth="5",
+                             relief="raised")
         self.Tocador.place(x=250,
                            y=385,
                            width=475,
                            height=215)
 
-        self.IntroCad = Label(self.Cadastro)
+        texto = "Para cadastrar uma música\nindique o seu diretório."
+        self.IntroCad = Label(self.Cadastro,
+                              text=texto,
+                              font=font,
+                              fg=fg,
+                              bg="#FFFACD")
         self.IntroCad.pack()
 
-        self.CampoCad = Entry(self.Cadastro)
+        self.CampoCad = Entry(self.Cadastro,
+                              fg=fg,
+                              bg="#FFFACD",
+                              insertbackground=fg,
+                              font=("Hack", "12"),
+                              width="30")
         self.CampoCad.bind("<Return>",
                            lambda a: self.Cadastrar())
         self.CampoCad.bind("<KP_Enter>",
@@ -174,19 +193,47 @@ class Janela:
                            ipadx="5")
 
         self.BotaoCad = Button(self.Cadastro,
-                               command=self.Cadastrar)
+                               fg=fg,
+                               bg="#FFFACD",
+                               activeforeground="#FFFACD",
+                               command=self.Cadastrar,
+                               activebackground=fg,
+                               font=font,
+                               text="Cadstrar",
+                               borderwidth="3",
+                               relief="raised")
         self.BotaoCad.pack(pady="10")
 
-        self.TituloLista = Label(self.Lista)
+        self.TituloLista = Label(self.Lista,
+                                 text="Músicas Cadastradas:",
+                                 font=font,
+                                 fg=fg,
+                                 bg="#40E0D0")
         self.TituloLista.pack()
 
         self.BotaoPlay = Button(self.Lista,
-                                command=lambda: self.Tocar("botao"))
+                                text="Play",
+                                command=lambda: self.Tocar("botao"),
+                                font=font,
+                                fg=fg,
+                                bg="#40E0D0",
+                                activebackground=fg,
+                                activeforeground="#7FFFD4",
+                                relief="raised",
+                                borderwidth="3")
         self.BotaoPlay.place(x=50,
                              y=50)
 
         self.BotaoExc = Button(self.Lista,
-                               command=self.Excluir)
+                               text="Excluir",
+                               command=self.Excluir,
+                               font=font,
+                               fg=fg,
+                               bg="#40E0D0",
+                               activebackground=fg,
+                               activeforeground="#7FFFD4",
+                               relief="raised",
+                               borderwidth="3")
         self.BotaoExc.pack(anchor="se",
                            padx="50")
 
@@ -203,32 +250,68 @@ class Janela:
 
         self.CriaLista()
 
-        self.IntroToc = Label(self.Tocador)
+        self.IntroToc = Label(self.Tocador,
+                              bg="#F0C300",
+                              font=font,
+                              text="Escolha uma música\n -- : -- / -- : --",
+                              fg="#FFFFFF")
         self.IntroToc.pack(pady="5")
 
-        self.BarraToc = Label(self.Tocador)
+        self.BarraToc = Label(self.Tocador,
+                              bg="#F0C300",
+                              font=font,
+                              text="[]"*15,
+                              fg="#FFFFFF")
         self.BarraToc.pack(pady="5")
 
         self.BotaoParar = Button(self.Tocador,
-                                 command=self.Parar)
+                                 bg="#F0C300",
+                                 font=("Hack", "16"),
+                                 text="Parar",
+                                 fg="#FFFFFF",
+                                 command=self.Parar,
+                                 activebackground="#FFFFFF",
+                                 activeforeground="#F0C300")
         self.BotaoParar.pack()
 
+        font = ("Exmouth", "20", "bold")
         # OBS: para obter o valor das BooleanVar 's é necessário
         # usar o método .get()
         self.ciclo = BooleanVar()
         self.OpLoop = Checkbutton(self.Opcoes,
+                                  text="Cíclico?",
+                                  bg="#B22222",
+                                  fg="#000000",
+                                  onvalue=True,
+                                  offvalue=False,
                                   variable=self.ciclo,
+                                  font=font,
+                                  highlightthickness=0,
                                   state="disabled")
 
         self.aleatorio = BooleanVar()
         self.OpAlea = Checkbutton(self.Opcoes,
+                                  text="Aleatório?",
+                                  bg="#B22222",
+                                  fg="#000000",
+                                  onvalue=True,
+                                  offvalue=False,
                                   variable=self.aleatorio,
+                                  font=font,
+                                  highlightthickness=0,
                                   state="disabled")
 
         self.continuo = BooleanVar()
         self.Contin = Checkbutton(self.Opcoes,
+                                  text="Continuo?",
+                                  bg="#B22222",
+                                  fg="#000000",
+                                  onvalue=True,
+                                  offvalue=False,
                                   variable=self.continuo,
-                                  command=self.FuncaoOpcoes)
+                                  font=font,
+                                  command=self.FuncaoOpcoes,
+                                  highlightthickness=0)
 
         self.Contin.pack(expand=True,
                          anchor="w",
@@ -245,7 +328,6 @@ class Janela:
         if self.framework.is_alive():
             self.Parar()
         master.destroy()
-        exit(0)
 
     def CriaLista(self: object) -> None:
         """ Method to create the list box."""

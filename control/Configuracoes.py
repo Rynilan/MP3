@@ -4,11 +4,17 @@ from os import path, rename, remove
 def pegar_configuracoes() -> tuple[path]:
     """ Get the value of the configurations of the window."""
 
-    with open(path.dirname(path.realpath(__file__)) +
-              r"/config.txt", "r") as config:
+    endereco = path.dirname(path.realpath(__file__)).removesuffix("/control")
+    with open(endereco + r"/model/config.txt", "r") as config:
         opcoes: list[str] = config.readlines()
-    for opcao, indice in enumerate(opcoes):
-        opcoes[indice]: str = opcao[opcao.find(":") + 1:]
+    for indice, opcao in enumerate(opcoes):
+        opcoes[indice]: str = opcao[opcao.find(":") + 1:].removesuffix("\n")
+    with open(endereco + r"/model/config/temas/" +
+              opcoes[1] + ".txt", "r") as tema:
+        opcoes.append(tema.readlines())
+    for indice, cor in enumerate(opcoes[5]):
+        opcoes[5][indice]: list[str] = cor[cor.find(":") + 1:].removesuffix("\n")
+    opcoes[5] = tuple(opcoes[5])
     return tuple(opcoes)
 
 
@@ -28,6 +34,10 @@ def mudar_configuracoes(indice: int, valor: str) -> None:
 def pegar_texto(idioma: str) -> tuple[str]:
     """ Get all the text that 'll be displayed on screen."""
 
-    with open(path.dirname(path.realpath(__file__)) +
-              r"/{}".format(idioma), "r") as texto:
-        return tuple(texto.readlines)
+    with open(path.dirname(path.realpath(__file__)).removesuffix("/control") +
+              r"/model/config/idiomas/{}.txt".format(idioma), "r",
+              encoding='utf-8') as texto:
+        frases = texto.readlines()
+    for indice, frase in enumerate(frases):
+        frases[indice] = frase.removesuffix("\n")
+    return tuple(frases)
