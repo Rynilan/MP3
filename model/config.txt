@@ -1,5 +1,5 @@
-IDIOMA:pt-br
-TEMA:claro
+IDIOMA:en-us
+TEMA:escuro
 TAMANHO_DA_LETRA:30
 FONTE:Exmouth
 CARACTERÍSTICA:bold

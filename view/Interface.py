@@ -15,8 +15,6 @@ from tkinter import (Frame,
 
 from control.Musica import Musica
 
-from codecs import decode
-
 from control.Configuracoes import (pegar_texto,
                                    pegar_configuracoes,
                                    mudar_configuracoes)
@@ -37,7 +35,6 @@ class Janela:
     def css(self: object) -> None:
         """ Give the style for the widgets."""
 
-        from tkinter import Frame, Button, Entry, Label, Checkbutton
         configuracoes: tuple[str] = pegar_configuracoes()
         textos: tuple[str] = pegar_texto(configuracoes[0])
         font: tuple[str] = (configuracoes[3],
@@ -72,7 +69,8 @@ class Janela:
                     case _:
                         fg: str = configuracoes[5][1]
                         bg: str = configuracoes[5][0]
-                if type(valor) in (Label, Checkbutton, Entry, Button):
+                if type(valor) in (Label, Checkbutton, Entry,
+                                   Button, Listbox):
                     valor.configure(bg=bg, fg=fg, font=font)
                 if type(valor) is Entry:
                     valor.configure(insertbackground=fg,
@@ -96,7 +94,7 @@ class Janela:
                                     onvalue=True,
                                     offvalue=False,
                                     justify="left")
-                elif type(valor) is Tk:
+                elif type(valor) is Tk or Scrollbar:
                     valor.configure(bg=bg)
                 else:
                     pass
@@ -191,13 +189,11 @@ class Janela:
                            padx="50")
 
         self.barrax = Scrollbar(self.Lista,
-                                orient="horizontal",
-                                bg="#40E0D0")
+                                orient="horizontal")
         self.barrax.pack(side="bottom",
                          fill="x")
         self.barray = Scrollbar(self.Lista,
-                                orient="vertical",
-                                bg="#40E0D0")
+                                orient="vertical")
         self.barray.pack(side="left",
                          fill="y")
 
@@ -302,14 +298,15 @@ class Janela:
         if framework.is_alive() and invocador != "continuo":
             self.Parar()
         escolhida = self.Escolha(invocador)
-        escolhida = [escolhida, Musica(self.MusCad[escolhida])]
-        escolhida[1].Play()
-        framework = Thread(target=self.telaTocadora)
-        while not escolhida[1].info:
-            pass
-        self.framework = framework
-        self.ant = escolhida
-        framework.start()
+        if escolhida is not None:
+            escolhida = [escolhida, Musica(self.MusCad[escolhida])]
+            escolhida[1].Play()
+            framework = Thread(target=self.telaTocadora)
+            while not escolhida[1].info:
+                pass
+            self.framework = framework
+            self.ant = escolhida
+            framework.start()
 
     def Escolha(self: object, invocador: str) -> int:
         """ Get the music to be played."""
@@ -327,6 +324,8 @@ class Janela:
                     escolhida = self.ant[0] + 1
                 elif self.ciclo.get():
                     escolhida = 0
+                else:
+                    escolhida = None
         else:
             escolhida = self.ListaCad.curselection()[0]
         return escolhida

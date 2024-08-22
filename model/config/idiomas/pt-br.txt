@@ -8,6 +8,6 @@ Musicas Cadastradas
 Play
 Excluir
 Sair
-Musicas Piratas 3
+Músicas Piratas 3
 Escolha uma música\n -- : -- / -- : --
 [][][][][][][][][][][][][][][]
