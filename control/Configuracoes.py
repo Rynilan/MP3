@@ -21,10 +21,14 @@ def pegar_configuracoes() -> tuple[path]:
 def mudar_configuracoes(indice: int, valor: str) -> None:
     """ Update the configuration file."""
 
-    endereco: str = path.dirname(path.realpath(__file__))
+    endereco: str = path.dirname(
+                                    path.realpath(__file__)
+                                ).removesuffix(r"/control") + r"/model"
     with open(endereco + r"/config.txt", "r") as config:
         opcoes: list[str] = config.readlines()
-        opcoes[indice]: str = valor
+        opcoes[indice]: str = opcoes[indice].replace(
+            opcoes[indice][opcoes[indice].find(":") + 1:], valor + "\n"
+        )
     with open(endereco + r"/temp_config.txt", "w") as config:
         config.writelines(opcoes)
     remove(endereco + r"/config.txt")

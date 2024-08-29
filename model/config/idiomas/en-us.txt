@@ -11,3 +11,5 @@ Exit
 Músicas Piratas 3
 Choose a music\n -- : -- / -- : --
 [][][][][][][][][][][][][][][]
+Language
+Theme

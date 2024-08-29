@@ -11,7 +11,11 @@ from tkinter import (Frame,
                      Scrollbar,
                      Checkbutton,
                      BooleanVar,
-                     Tk)
+                     Tk,
+                     Menubutton,
+                     StringVar,
+                     Menu
+                     )
 
 from control.Musica import Musica
 
@@ -52,7 +56,7 @@ class Janela:
         elementos: dict = vars(self)
 
         for atributo, valor in elementos.items():
-            if type(valor) not in (BooleanVar, list, Thread):
+            if type(valor) not in (BooleanVar, list, Thread, StringVar):
                 match valor.master:
                     case self.Cadastro:
                         fg: str = configuracoes[5][1]
@@ -70,7 +74,7 @@ class Janela:
                         fg: str = configuracoes[5][1]
                         bg: str = configuracoes[5][0]
                 if type(valor) in (Label, Checkbutton, Entry,
-                                   Button, Listbox):
+                                   Button, Listbox, Menu, Menubutton):
                     valor.configure(bg=bg, fg=fg, font=font)
                 if type(valor) is Entry:
                     valor.configure(insertbackground=fg,
@@ -115,6 +119,8 @@ class Janela:
         self.sair.configure(text=textos[9])
         self.IntroToc.configure(text=textos[11].replace("\\n", "\n"))
         self.BarraToc.configure(text=textos[12])
+        self.idioma_botao.configure(text=textos[13])
+        self.tema_botao.configure(text=textos[14])
 
     def html(self: object, master: Tk) -> None:
         """ Create and place the widgets on the window."""
@@ -123,6 +129,29 @@ class Janela:
         master.geometry("1366x768")
         master.bind("<Escape>", lambda a: self.Kill(master))
         self.master = master
+
+        self.idioma: StringVar = StringVar()
+        self.idioma_botao = Menubutton(master)
+        self.idioma_botao.pack()
+        self.idioma_menu = Menu(self.idioma_botao)
+        self.idioma_botao["menu"] = self.idioma_menu
+        self.idioma_menu.add_radiobutton(label="pt-br",
+                                         var=self.idioma,
+                                         value="pt-br",
+                                         command=lambda: self.mudar_idioma(
+                                                         self.idioma.get()
+                                                         ))
+        self.idioma_menu.add_radiobutton(label="en-us",
+                                         var=self.idioma,
+                                         value="en-us",
+                                         command=lambda: self.mudar_idioma(
+                                                         self.idioma.get()
+                                                         ))
+
+        self.tema_botao = Menubutton(master)
+        self.tema_botao.pack()
+        self.tema_menu = Menu(self.idioma_botao)
+        self.tema_botao["menu"] = self.tema_menu
 
         self.titulo = Label(master)
         self.titulo.pack(side="top",
@@ -245,28 +274,27 @@ class Janela:
 
     def CriaLista(self: object) -> None:
         """ Method to create the list box."""
-        lista = Listbox(self.Lista,
-                        font=("Exmouth", "30", "bold"),
-                        fg="#8B4513",
-                        bg="#40E0D0",
-                        borderwidth="4",
-                        relief="sunken",
-                        height="10",
-                        width="16",
-                        yscrollcommand=self.barray.set,
-                        xscrollcommand=self.barrax.set,
-                        selectmode="single",
-                        selectbackground="#00FA9A")
+        config: tuple[str] = pegar_configuracoes()
+        lista: Listbox = Listbox(self.Lista,
+                                 font=("Exmouth", "30", "bold"),
+                                 fg=config[5][1],
+                                 bg=config[5][3],
+                                 borderwidth="4",
+                                 relief="sunken",
+                                 height="10",
+                                 width="16",
+                                 yscrollcommand=self.barray.set,
+                                 xscrollcommand=self.barrax.set,
+                                 selectmode="single",
+                                 selectbackground="#00FA9A")
         lista.bind("<Return>", lambda a: self.Tocar("botao"))
         lista.bind("<KP_Enter>", lambda a: self.Tocar("botao"))
         self.barrax["command"] = lista.xview
         self.barray["command"] = lista.yview
-        y = int()
-        for x in self.MusCad:
+        for y, x in enumerate(self.MusCad):
             lista.insert(y, x[x.rfind("/") + 1: x.rfind(".")])
-            y += 1
         lista.pack(fill="x")
-        self.ListaCad = lista
+        self.ListaCad: Listbox = lista
 
     def Cadastrar(self: object) -> None:
         """ Adds the path of a music on the data storage and
@@ -368,3 +396,7 @@ class Janela:
         else:
             self.OpAlea["state"] = "disable"
             self.OpLoop["state"] = "disable"
+
+    def mudar_idioma(self: object, idioma: str) -> None:
+        mudar_configuracoes(0, idioma)
+        self.css()

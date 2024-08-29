@@ -11,3 +11,5 @@ Sair
 Músicas Piratas 3
 Escolha uma música\n -- : -- / -- : --
 [][][][][][][][][][][][][][][]
+Idioma
+Tema
