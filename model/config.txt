@@ -1,4 +1,4 @@
-IDIOMA:en-us
+IDIOMA:pt-br
 TEMA:claro
 TAMANHO_DA_LETRA:30
 FONTE:Exmouth

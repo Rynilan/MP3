@@ -14,7 +14,7 @@ from tkinter import (Frame,
                      Tk,
                      Menubutton,
                      StringVar,
-                     Menu
+                     Menu,
                      )
 
 from control.Musica import Musica
@@ -56,7 +56,8 @@ class Janela:
         elementos: dict = vars(self)
 
         for atributo, valor in elementos.items():
-            if type(valor) not in (BooleanVar, list, Thread, StringVar):
+            tipo = type(valor)
+            if tipo not in (BooleanVar, list, Thread, StringVar):
                 match valor.master:
                     case self.Cadastro:
                         fg: str = configuracoes[5][1]
@@ -73,23 +74,28 @@ class Janela:
                     case _:
                         fg: str = configuracoes[5][1]
                         bg: str = configuracoes[5][0]
-                if type(valor) in (Label, Checkbutton, Entry,
-                                   Button, Listbox, Menu, Menubutton):
+                if tipo in (Label, Checkbutton, Entry,
+                            Button, Listbox):
                     valor.configure(bg=bg, fg=fg, font=font)
-                if type(valor) is Entry:
+                if tipo is Entry:
                     valor.configure(insertbackground=fg,
                                     width=30,
                                     font=("Hack", "12"))
-                elif type(valor) is Frame:
+                elif tipo is Menubutton:
+                    valor.configure(font=(configuracoes[3],
+                                          "18", configuracoes[4]),
+                                    bg=bg,
+                                    fg=fg)
+                elif tipo is Frame:
                     valor.configure(bg=bg,
                                     bd="5",
                                     relief="raised")
-                elif type(valor) is Button:
+                elif tipo is Button:
                     valor.configure(activebackground=fg,
                                     activeforeground=bg,
                                     bd="3",
                                     relief="raised")
-                elif type(valor) is Checkbutton:
+                elif tipo is Checkbutton:
                     valor: Checkbutton
                     valor.configure(highlightthickness=0,
                                     fg="#000000",
@@ -98,7 +104,7 @@ class Janela:
                                     onvalue=True,
                                     offvalue=False,
                                     justify="left")
-                elif type(valor) is Tk or Scrollbar:
+                elif tipo is Tk or Scrollbar:
                     valor.configure(bg=bg)
                 else:
                     pass
@@ -106,6 +112,7 @@ class Janela:
         self.Opcoes["bg"] = configuracoes[5][5]
         self.Lista["bg"] = configuracoes[5][3]
         self.Tocador["bg"] = configuracoes[5][4]
+        self.frame_menu["bd"] = "0"
         self.titulo.configure(text=textos[10])
         self.IntroCad.configure(text=textos[0].replace("\\n", "\n"))
         self.BotaoCad.configure(text=textos[1])
@@ -130,9 +137,13 @@ class Janela:
         master.bind("<Escape>", lambda a: self.Kill(master))
         self.master = master
 
+        self.frame_menu = Frame(master)
+        self.frame_menu.pack(anchor="w")
+
         self.idioma: StringVar = StringVar()
-        self.idioma_botao = Menubutton(master)
-        self.idioma_botao.pack()
+        self.idioma_botao = Menubutton(self.frame_menu)
+        self.idioma_botao.grid(row=0,
+                               column=0)
         self.idioma_menu = Menu(self.idioma_botao)
         self.idioma_botao["menu"] = self.idioma_menu
         self.idioma_menu.add_radiobutton(label="pt-br",
@@ -148,14 +159,27 @@ class Janela:
                                                          self.idioma.get()
                                                          ))
 
-        self.tema_botao = Menubutton(master)
-        self.tema_botao.pack()
-        self.tema_menu = Menu(self.idioma_botao)
+        self.tema: StringVar = StringVar()
+        self.tema_botao = Menubutton(self.frame_menu)
+        self.tema_botao.grid(row=0,
+                             column=1)
+        self.tema_menu = Menu(self.tema_botao)
         self.tema_botao["menu"] = self.tema_menu
-
+        self.tema_menu.add_radiobutton(label="🌞",
+                                       var=self.tema,
+                                       value="claro",
+                                       command=lambda: self.mudar_tema(
+                                           self.tema.get()
+                                       ))
+        self.tema_menu.add_radiobutton(label="🌚",
+                                       var=self.tema,
+                                       value="escuro",
+                                       command=lambda: self.mudar_tema(
+                                           self.tema.get()
+                                       ))
         self.titulo = Label(master)
-        self.titulo.pack(side="top",
-                         fill="x")
+        self.titulo.place(relx=0.4,
+                          rely=0.0)
 
         self.sair = Button(master,
                            command=lambda: self.Kill(master))
@@ -399,4 +423,8 @@ class Janela:
 
     def mudar_idioma(self: object, idioma: str) -> None:
         mudar_configuracoes(0, idioma)
+        self.css()
+
+    def mudar_tema(self: object, tema: str) -> None:
+        mudar_configuracoes(1, tema)
         self.css()
