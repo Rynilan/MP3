@@ -17,6 +17,8 @@ from tkinter import (Frame,
                      Menu,
                      )
 
+from view.Imagens import Imagens
+
 from control.Musica import Musica
 
 from control.Configuracoes import (pegar_texto,
@@ -57,7 +59,11 @@ class Janela:
 
         for atributo, valor in elementos.items():
             tipo = type(valor)
-            if tipo not in (BooleanVar, list, Thread, StringVar):
+            if tipo not in (BooleanVar,
+                            list,
+                            Thread,
+                            StringVar,
+                            Imagens):
                 match valor.master:
                     case self.Cadastro:
                         fg: str = configuracoes[5][1]
@@ -71,6 +77,9 @@ class Janela:
                     case self.Opcoes:
                         fg: str = configuracoes[5][6]
                         bg: str = configuracoes[5][5]
+                    case self.BotoesDaReproducao:
+                        fg: str = configuracoes[5][6]
+                        bg: str = configuracoes[5][4]
                     case _:
                         fg: str = configuracoes[5][1]
                         bg: str = configuracoes[5][0]
@@ -90,6 +99,8 @@ class Janela:
                     valor.configure(bg=bg,
                                     bd="5",
                                     relief="raised")
+                    if atributo == "BotoesDaReproducao":
+                        valor.config(bd="0")
                 elif tipo is Button:
                     valor.configure(activebackground=fg,
                                     activeforeground=bg,
@@ -113,21 +124,20 @@ class Janela:
         self.Lista["bg"] = configuracoes[5][3]
         self.Tocador["bg"] = configuracoes[5][4]
         self.frame_menu["bd"] = "0"
-        self.titulo.configure(text=textos[10])
+        self.titulo.configure(text=textos[9])
         self.IntroCad.configure(text=textos[0].replace("\\n", "\n"))
         self.BotaoCad.configure(text=textos[1])
         self.Contin.configure(text=textos[2])
         self.OpLoop.configure(text=textos[3])
         self.OpAlea.configure(text=textos[4])
-        self.BotaoParar.configure(text=textos[5], font=("Hack", "12"))
-        self.TituloLista.configure(text=textos[6])
-        self.BotaoPlay.configure(text=textos[7])
-        self.BotaoExc.configure(text=textos[8])
-        self.sair.configure(text=textos[9])
-        self.IntroToc.configure(text=textos[11].replace("\\n", "\n"))
-        self.BarraToc.configure(text=textos[12])
-        self.idioma_botao.configure(text=textos[13])
-        self.tema_botao.configure(text=textos[14])
+        self.TituloLista.configure(text=textos[5])
+        self.BotaoPlay.configure(text=textos[6])
+        self.BotaoExc.configure(text=textos[7])
+        self.sair.configure(text=textos[8])
+        self.IntroToc.configure(text=textos[10].replace("\\n", "\n"))
+        self.BarraToc.configure(text=textos[11])
+        self.idioma_botao.configure(text=textos[12])
+        self.tema_botao.configure(text=textos[13])
 
     def html(self: object, master: Tk) -> None:
         """ Create and place the widgets on the window."""
@@ -136,6 +146,8 @@ class Janela:
         master.geometry("1366x768")
         master.bind("<Escape>", lambda a: self.Kill(master))
         self.master = master
+
+        self.imagens: Imagens = Imagens()
 
         self.frame_menu = Frame(master)
         self.frame_menu.pack(anchor="w")
@@ -165,13 +177,13 @@ class Janela:
                              column=1)
         self.tema_menu = Menu(self.tema_botao)
         self.tema_botao["menu"] = self.tema_menu
-        self.tema_menu.add_radiobutton(label="🌞",
+        self.tema_menu.add_radiobutton(image=self.imagens.claro,
                                        var=self.tema,
                                        value="claro",
                                        command=lambda: self.mudar_tema(
                                            self.tema.get()
                                        ))
-        self.tema_menu.add_radiobutton(label="🌚",
+        self.tema_menu.add_radiobutton(image=self.imagens.escuro,
                                        var=self.tema,
                                        value="escuro",
                                        command=lambda: self.mudar_tema(
@@ -258,9 +270,35 @@ class Janela:
         self.BarraToc = Label(self.Tocador)
         self.BarraToc.pack(pady="5")
 
-        self.BotaoParar = Button(self.Tocador,
+        self.BotoesDaReproducao: Frame = Frame(self.Tocador)
+        self.BotoesDaReproducao.pack(ipadx="5",
+                                     ipady="5")
+
+        self.BotaoParar = Button(self.BotoesDaReproducao,
+                                 image=self.imagens.parar,
                                  command=self.Parar)
-        self.BotaoParar.pack()
+        self.BotaoPausar = Button(self.BotoesDaReproducao,
+                                  image=self.imagens.pausar_continuar,
+                                  command=self.ant[1].pausa_ou_continua)
+        self.Adianta10 = Button(self.BotoesDaReproducao,
+                                image=self.imagens.proximos_10,
+                                command=lambda: self.ant[1].muda_posicao(10))
+        self.Retrocede10 = Button(self.BotoesDaReproducao,
+                                  image=self.imagens.anteriores_10,
+                                  command=lambda: self.ant[1].muda_posicao(-10)
+                                  )
+        self.Retrocede10.grid(row=0,
+                              column=0,
+                              padx="10")
+        self.BotaoPausar.grid(row=0,
+                              column=1,
+                              padx="10")
+        self.BotaoParar.grid(row=0,
+                             column=2,
+                             padx='10')
+        self.Adianta10.grid(row=0,
+                            column=3,
+                            padx='10')
 
         # OBS: para obter o valor das BooleanVar 's é necessário
         # usar o método .get()

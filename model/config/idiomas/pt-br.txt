@@ -3,7 +3,6 @@ Cadastrar
 Contínuo?
 Cíclico?
 Aleatório?
-Parar
 Musicas Cadastradas
 Play
 Excluir

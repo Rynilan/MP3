@@ -3,7 +3,6 @@ Register
 Continuous mode
 Cyclic mode
 Random mode
-Stop
 Music Registered
 Play
 Remove

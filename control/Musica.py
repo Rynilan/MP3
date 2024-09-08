@@ -63,6 +63,7 @@ class Musica:
             and when it end set the event of 'toca'."""
         if not mixer.music.get_busy():
             self.toca.set()
+            mixer.music.
 
     def posicao(self: object) -> None:
         """ Get the position of the music in seconds (it doesn't
@@ -81,3 +82,15 @@ class Musica:
                 posicao = posicao + " : " + str(posicaoSegundo % 60)
             self.pos = posicao
             self.posSegundo = posicaoSegundo
+
+    def muda_posicao(self: object, mudanca: int) -> None:
+        """ Change the position of the music to actual pos + mudanca."""
+        if mixer.music.get_busy():
+            mixer.music.set_pos(int(mixer.music.get_pos() / 1000) + mudanca)
+
+    def pausa_ou_continua(self: object) -> None:
+        """ If the music is paused make it play again, if not, pause it."""
+        if mixer.music.get_busy:
+            mixer.music.unpause()
+        else:
+            mixer.music.pause()
