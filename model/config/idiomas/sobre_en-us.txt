@@ -1,0 +1,45 @@
+M.P.3, Músicas Piratas 3 (Pirate Musics 3), is a personal project, a mp3 
+player with connection with the internet without any advertisement. It 
+started as a learning project, now I want it to spread all around the world.
+
+Functions of every section (big rectangle):
+
+- Menu
+
+	* Give some exibition options.
+	* Themes: change between light (small sun) and dark (small moon) theme.
+	* Language: change the language, the notations is, language-country.
+	* About: show this window.
+
+- Register
+
+	* Store the path to the .mp3 file on the software memory, it don't
+	change the file itself.
+
+- List of registered musics
+
+	* Show the name of the .mp3 files that are stored in the memory.
+	* Give the options to play it or remove it.
+	Note: removing it don't delete it from your device, just its
+	path on the software memory.
+
+- Screen of play
+	
+	* Show some information about the music that's currently playing.
+	* Give some options of actions to be made with the music while it
+	play, stop it, advance or/and go back ten seconds, and, pause and
+	resume the music
+
+- Play modes
+
+	* Give some options to the user who want to make one music play 
+	after another.
+	* Continuous mode: the next music on the list will be played after
+	the current end.
+	* Cyclic mode: when the last music on the list end it'll return to
+	the first.
+	* Random mode: music will be played randomly (this mode override
+	the others two).
+
+I hope that you're enjoying the software, from the developer,
+	- Ilan Vitor, Brazil, 2024

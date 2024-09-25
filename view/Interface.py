@@ -27,6 +27,8 @@ from control.Configuracoes import (pegar_texto,
 
 from threading import Thread
 
+from view.sobre import Sobre
+
 
 class Janela:
     """ The window of the music player."""
@@ -47,13 +49,6 @@ class Janela:
                             configuracoes[2],
                             configuracoes[4])
 
-#        fg1: str = configuracoes[5][1]
-#        fg2: str = configuracoes[5][6]
-#        bgMas: str = configuracoes[5][0]
-#        bgCad: str = configuracoes[5][2]
-#        bgToc: str = configuracoes[5][4]
-#        bgLis: str = configuracoes[5][3]
-#        bgOpc: str = configuracoes[5][5]
 
         elementos: dict = vars(self)
 
@@ -138,6 +133,7 @@ class Janela:
         self.BarraToc.configure(text=textos[11])
         self.idioma_botao.configure(text=textos[12])
         self.tema_botao.configure(text=textos[13])
+        self.sobre.configure(text=textos[14])
 
     def html(self: object, master: Tk) -> None:
         """ Create and place the widgets on the window."""
@@ -189,6 +185,12 @@ class Janela:
                                        command=lambda: self.mudar_tema(
                                            self.tema.get()
                                        ))
+        toplevel_sobre: Sobre = Sobre(master)
+        self.sobre: Button = Button(self.frame_menu,
+                                    command=toplevel_sobre.criar)
+        self.sobre.grid(row=0,
+                        column=2)
+
         self.titulo = Label(master)
         self.titulo.place(relx=0.4,
                           rely=0.0)
@@ -338,6 +340,7 @@ class Janela:
         """ Method to create the list box."""
         config: tuple[str] = pegar_configuracoes()
         lista: Listbox = Listbox(self.Lista,
+                                 highlightthickness="0",
                                  font=("Exmouth", "30", "bold"),
                                  fg=config[5][1],
                                  bg=config[5][3],
@@ -394,6 +397,7 @@ class Janela:
             framework = Thread(target=self.telaTocadora)
             while not escolhida[1].info:
                 pass
+            self.BarraToc["text"] = "--" * 15
             self.framework = framework
             self.ant = escolhida
             framework.start()

@@ -2,7 +2,21 @@ from os import path, rename, remove
 
 
 def pegar_configuracoes() -> tuple[path]:
-    """ Get the value of the configurations of the window."""
+    """ Get the value of the configurations of the window, summary:
+            language: str = configuracoes[0]
+            theme: str = configuracoes[1]
+            font_size: str = configuracoes[2]
+            font_family: str = configuracoes[3]
+            font_characteristic: str = configuracoes[4]
+            fg1: str = configuracoes[5][1]
+            fg2: str = configuracoes[5][6]
+            bgMas: str = configuracoes[5][0]
+            bgCad: str = configuracoes[5][2]
+            bgToc: str = configuracoes[5][4]
+            bgLis: str = configuracoes[5][3]
+            bgOpc: str = configuracoes[5][5]
+
+    ."""
 
     endereco = path.dirname(path.realpath(__file__)).removesuffix("/control")
     with open(endereco + r"/model/config.txt", "r") as config:

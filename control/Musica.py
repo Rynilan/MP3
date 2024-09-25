@@ -63,7 +63,6 @@ class Musica:
             and when it end set the event of 'toca'."""
         if not mixer.music.get_busy():
             self.toca.set()
-            mixer.music.
 
     def posicao(self: object) -> None:
         """ Get the position of the music in seconds (it doesn't

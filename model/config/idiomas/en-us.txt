@@ -12,3 +12,4 @@ Choose a music\n -- : -- / -- : --
 [][][][][][][][][][][][][][][]
 Language
 Theme
+About

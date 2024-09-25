@@ -1,0 +1,40 @@
+M.P.3, Músicas Piratas 3, é uma iniciativa pessoal, um mp3 player com conexão
+a rede isento de qualquer anúncio, iniciado como projeto de aprendizado, agora
+espera que se dissemine pelo mundo.
+
+Funcionalidades de seção:
+
+- Menus
+
+	* oferece algumas opções de exibição.
+	* tema: troca entre tema claro (pequeno sol) e escuro (pequena lua).
+	* idioma: troca de idioma, a notação é língua-país.
+	* sobre: mostra essa janela.
+
+- Cadastro
+
+	* Armazena o endereço da música em seu dispositivo para que possa tocá-la,
+	não faz cópia ou altera ela diretamente.
+
+- Lista de músicas cadastradas
+
+	* Exibe o nome do arquivo .mp3 de todas as músicas que estão armazenadas na memória
+	do software.
+	* Dá opção de tocá-la ou removê-la do cadastro.
+	Obs: removê-la do cadastro não a excluí de seu dispositivo.
+
+- Tela tocadora:
+	
+	* Mostra algumas informações da música que está sendo tocada agora.
+	* Dá opções de ação para serem feitas com a música que toca, parar,
+	voltar e/ou adiantar dez segundos e, pausar e retomar.
+
+- Opções de continuidade:
+
+	* Oferece opções para o usuário caso queira que sejam tocadas músicas de forma encadeada.
+	* Continuamente: a próxima música na ordem será tocada assim que a atual acabar.
+	* Cíclico: ao chegar a última música após ela será tocada a primeira.
+	* Aleatório: músicas serão tocadas aleatoriamente (sobrepõe as outras duas opções).
+
+Espero que esteja aproveitando o software, do desenvolvedor,
+	- Ilan Vitor, 2024.

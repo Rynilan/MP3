@@ -12,3 +12,4 @@ Escolha uma música\n -- : -- / -- : --
 [][][][][][][][][][][][][][][]
 Idioma
 Tema
+Sobre

@@ -3,12 +3,15 @@ from PIL import (
     ImageTk
 )
 
+from os import path
+
 
 class Imagens:
     """ A class just to store the images that 'll be used on the screen."""
 
     def __init__(self: object) -> None:
-        endereco: str = r'model/config/icons/{}.png'
+        endereco: str = path.dirname(path.realpath(__file__)).removesuffix(
+                        "/view") + r'/model/config/icons/{}.png'
         tamanho: tuple[int, int] = (16, 16)
         self.claro = ImageTk.PhotoImage(
             Image.open(endereco.format("claro")).resize(tamanho)
