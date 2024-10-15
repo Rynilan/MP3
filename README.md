@@ -10,4 +10,9 @@ but, I am to excited to share it.
 * Support for spanish, french and german.
 * Sound feedback to interactions.
 * Some others cool stuff.
-Dependencies: time, os, pydub, threading, tkinter, pathlib, random, pydub and wave
+Dependencies: time, os, pygame, threading, tkinter and random
+
+# How to run
+
+Simplily clone/download this repository and run the 'Principal.py' file:  
+<code> python Principal.py; </code>
