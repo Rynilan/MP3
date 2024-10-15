@@ -9,6 +9,7 @@ but, I am to excited to share it.
 * Visual feedback for errors.
 * Support for spanish, french and german.
 * Sound feedback to interactions.
+* Fully functional pause, next 10s and previous 10s buttons.
 * Some others cool stuff.
 Dependencies: time, os, pygame, threading, tkinter and random
 
