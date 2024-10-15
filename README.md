@@ -1,8 +1,13 @@
-A simple interface to play .mp3 (and .wav) files.
-It isn't in its "final form" as some features will be added on the future, but, I am to excited to share it.
-Some features that 'll come:
-* english support (and some other languages), for now it only supports portuguese.
-* Bug fixes, there is some bugs on the code, this is a "alpha" version of it.
+# Overview
+
+A simple interface to play .mp3 files.  
+It isn't in its "final form" as some features will be added on the future,  
+but, I am to excited to share it.
+
+# Coming
+
 * Visual feedback for errors.
+* Support for spanish, french and german.
+* Sound feedback to interactions.
 * Some others cool stuff.
 Dependencies: time, os, pydub, threading, tkinter, pathlib, random, pydub and wave
