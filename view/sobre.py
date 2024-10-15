@@ -1,5 +1,5 @@
 from tkinter import (
-    Label,
+    Canvas,
     Toplevel,
     Button,
     Frame,
@@ -31,12 +31,18 @@ class Sobre:
         elementos.append(Toplevel(master))
         master = elementos[-1]
         elementos.append(Button(master, command=self.kill))
-        elementos.append(Label(master))
+        elementos.append(Canvas(master))
+        elementos.append(Scrollbar(master, command=elementos[2].yview))
+        elementos[2]['yscrollcommand'] = elementos[-1].set
         for elemento in elementos:
             if type(elemento) is Toplevel:
                 pass
             elif type(elemento) is Button:
                 elemento.pack(side='bottom', fill='x')
+            elif type(elemento) is Scrollbar:
+                elemento.place(rely=0.5, relx=0.95)
+            elif type(elemento) is Canvas:
+                elemento.pack(fill='both')
             else:
                 elemento.pack()
         self.elementos: tuple = elementos
@@ -52,12 +58,16 @@ class Sobre:
                 elemento.config(bg=configuracoes[5][0],
                                 fg=configuracoes[5][1],
                                 text=texto[8])
-            elif tipo is Label:
-                elemento.config(bg=configuracoes[5][0],
-                                fg=configuracoes[5][1],
-                                text=texto_sobre(configuracoes[0]))
+            elif tipo is Canvas:
+                elemento: Canvas
+                elemento.config(bg=configuracoes[5][0])
+                elemento.create_text(0.8 * int(elemento.cget('width')), 0,
+                                     anchor='n',
+                                     justify='center',
+                                     fill=configuracoes[5][1],
+                                     text=texto_sobre(configuracoes[0]))
 
-            else:
+            elif tipo is Toplevel:
                 elemento.config(bg=configuracoes[5][0])
                 elemento.title(texto[14])
 

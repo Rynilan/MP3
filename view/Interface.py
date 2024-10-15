@@ -280,12 +280,15 @@ class Janela:
                                  image=self.imagens.parar,
                                  command=self.Parar)
         self.BotaoPausar = Button(self.BotoesDaReproducao,
+                                  state='disabled',
                                   image=self.imagens.pausar_continuar,
                                   command=self.ant[1].pausa_ou_continua)
         self.Adianta10 = Button(self.BotoesDaReproducao,
+                                state='disabled',
                                 image=self.imagens.proximos_10,
                                 command=lambda: self.ant[1].muda_posicao(10))
         self.Retrocede10 = Button(self.BotoesDaReproducao,
+                                  state='disabled',
                                   image=self.imagens.anteriores_10,
                                   command=lambda: self.ant[1].muda_posicao(-10)
                                   )
@@ -400,6 +403,7 @@ class Janela:
             self.BarraToc["text"] = "--" * 15
             self.framework = framework
             self.ant = escolhida
+            framework.daemon = True
             framework.start()
 
     def Escolha(self: object, invocador: str) -> int:
